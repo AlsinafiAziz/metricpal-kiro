@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MetricPal Tracking Script Test Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            background: #f4f4f4;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        button {
+            background: #007cba;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #005a87;
+        }
+        form {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .tall-content {
+            height: 2000px;
+            background: linear-gradient(to bottom, #f0f0f0, #e0e0e0);
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .debug-info {
+            background: #e8f4f8;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-family: monospace;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <h1>MetricPal Tracking Script Test Page</h1>
+    
+    <div class="debug-info">
+        <strong>Debug Information:</strong><br>
+        Open your browser's developer console to see tracking events being sent.<br>
+        The script is configured to send events to: <code>http://localhost:3000/api/v1/collect/optimized</code>
+    </div>
+
+    <div class="container">
+        <h2>Click Tracking Test</h2>
+        <p>Click these buttons to test click event tracking:</p>
+        <button onclick="alert('Button 1 clicked!')">Test Button 1</button>
+        <button onclick="alert('Button 2 clicked!')">Test Button 2</button>
+        <button class="cta-button">CTA Button (Special Class)</button>
+    </div>
+
+    <div class="container">
+        <h2>Form Submission Test</h2>
+        <form id="test-form" onsubmit="handleFormSubmit(event)">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+            
+            <label for="email">Email (will trigger auto-identification):</label>
+            <input type="email" id="email" name="email" required>
+            
+            <label for="message">Message:</label>
+            <textarea id="message" name="message" rows="4"></textarea>
+            
+            <button type="submit">Submit Form</button>
+        </form>
+    </div>
+
+    <div class="container">
+        <h2>Search Form Test</h2>
+        <form id="search-form" onsubmit="handleSearchSubmit(event)">
+            <label for="search">Search Query:</label>
+            <input type="search" id="search" name="q" placeholder="Enter search term">
+            <button type="submit">Search</button>
+        </form>
+    </div>
+
+    <div class="container">
+        <h2>Custom Event Test</h2>
+        <button onclick="trackCustomEvent()">Track Custom Event</button>
+        <button onclick="trackGoal()">Track Goal</button>
+        <button onclick="identifyUser()">Identify User</button>
+    </div>
+
+    <div class="container">
+        <h2>Scroll Depth Test</h2>
+        <p>Scroll down through this tall content to test scroll depth tracking:</p>
+        <div class="tall-content">
+            <h3>Tall Content Section</h3>
+            <p>This section is intentionally tall to test scroll depth tracking.</p>
+            <p>As you scroll, the tracking script will record scroll milestones at 25%, 50%, 75%, 90%, and 100%.</p>
+            <p>Keep scrolling to see the scroll depth events in the console...</p>
+            
+            <div style="margin-top: 500px;">
+                <h4>25% Scroll Point</h4>
+                <p>You should see a scroll-depth event in the console around here.</p>
+            </div>
+            
+            <div style="margin-top: 500px;">
+                <h4>50% Scroll Point</h4>
+                <p>Another scroll-depth event should be triggered here.</p>
+            </div>
+            
+            <div style="margin-top: 500px;">
+                <h4>75% Scroll Point</h4>
+                <p>You're getting close to the bottom!</p>
+            </div>
+            
+            <div style="margin-top: 300px;">
+                <h4>90% Scroll Point</h4>
+                <p>Almost at the bottom now.</p>
+            </div>
+            
+            <div style="margin-top: 200px;">
+                <h4>100% Scroll Point</h4>
+                <p>You've reached the bottom! A 100% scroll-depth event should be triggered.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Test functions for custom events
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            alert('Form submitted! Check console for tracking events.');
+            // In a real application, you would process the form here
+        }
+
+        function handleSearchSubmit(event) {
+            event.preventDefault();
+            alert('Search submitted! Check console for tracking events.');
+            // In a real application, you would process the search here
+        }
+
+        function trackCustomEvent() {
+            if (window.MetricPal && window.MetricPal.trackEvent) {
+                window.MetricPal.trackEvent('Custom Button Click', {
+                    buttonType: 'test',
+                    timestamp: new Date().toISOString()
+                });
+                alert('Custom event tracked! Check console.');
+            } else {
+                alert('MetricPal not loaded yet');
+            }
+        }
+
+        function trackGoal() {
+            if (window.MetricPal && window.MetricPal.goal) {
+                window.MetricPal.goal('Test Goal Achieved', {
+                    goalValue: 100,
+                    source: 'test-page'
+                });
+                alert('Goal tracked! Check console.');
+            } else {
+                alert('MetricPal not loaded yet');
+            }
+        }
+
+        function identifyUser() {
+            if (window.MetricPal && window.MetricPal.identify) {
+                window.MetricPal.identify('test-user@example.com', {
+                    name: 'Test User',
+                    plan: 'premium'
+                });
+                alert('User identified! Check console.');
+            } else {
+                alert('MetricPal not loaded yet');
+            }
+        }
+
+        // Display MetricPal configuration when loaded
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                if (window.MetricPal && window.MetricPal.getConfig) {
+                    const config = window.MetricPal.getConfig();
+                    console.log('MetricPal Configuration:', config);
+                    console.log('Visitor ID:', window.MetricPal.getVisitorId());
+                    console.log('Is Identified:', window.MetricPal.isIdentified());
+                }
+            }, 1000);
+        });
+    </script>
+
+    <!-- MetricPal Tracking Script -->
+    <!-- Replace 'your-api-key-here' with an actual API key from your workspace -->
+    <script 
+        src="./Trackingscript.js"
+        apikey="mp_test_1234567890abcdef"
+        data-endpoint="http://localhost:3000/api/v1/collect/optimized"
+        data-debug="true"
+        data-auto-identify="true"
+        data-cookieless="false"
+        data-privacy-mode="false"
+    ></script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+version: '3.8'
+
+services:
+  # Next.js Web Application
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
+      - NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
+      - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY}
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - metricpal-network
+
+  # PostgreSQL Database (for local development)
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: metricpal_dev
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - metricpal-network
+
+  # Redis for caching and session management
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - metricpal-network
+
+  # Unified API Service (will be implemented in later tasks)
+  api:
+    build:
+      context: ./services/api
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/metricpal_dev
+      - REDIS_URL=redis://redis:6379
+      - SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
+      - SUPABASE_SERVICE_KEY=${SUPABASE_SERVICE_ROLE_KEY}
+    volumes:
+      - ./services/api:/app
+      - /app/node_modules
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - metricpal-network
+    profiles:
+      - api # Only start when explicitly requested
+
+  # MCP Router (will be implemented in later tasks)
+  mcp-router:
+    build:
+      context: ./services/mcp-router
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3002:3002"
+    environment:
+      - NODE_ENV=development
+      - SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
+      - SUPABASE_SERVICE_KEY=${SUPABASE_SERVICE_ROLE_KEY}
+    volumes:
+      - ./services/mcp-router:/app
+      - /app/node_modules
+    depends_on:
+      - postgres
+    networks:
+      - metricpal-network
+    profiles:
+      - mcp # Only start when explicitly requested
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  metricpal-network:
+    driver: bridge

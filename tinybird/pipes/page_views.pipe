@@ -1,0 +1,21 @@
+TOKEN "page_views_endpoint_read_token" READ
+
+NODE page_views_data
+SQL >
+    %
+    SELECT 
+        toDate(timestamp) as date,
+        workspace_id,
+        url,
+        count() as page_views,
+        uniq(visitor_id) as unique_visitors,
+        uniq(session_id) as sessions
+    FROM website_events
+    WHERE action_type = 'enter-page'
+      AND workspace_id = {{ String(workspace_id, required=True) }}
+      AND timestamp >= {{ DateTime(start_date, '2024-01-01 00:00:00') }}
+      AND timestamp <= {{ DateTime(end_date, '2024-12-31 23:59:59') }}
+    GROUP BY date, workspace_id, url
+    ORDER BY date DESC, page_views DESC
+
+TYPE ENDPOINT

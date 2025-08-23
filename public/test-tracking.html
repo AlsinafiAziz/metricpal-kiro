@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MetricPal Tracking Test</title>
+    <script 
+        src="/Trackingscript.js" 
+        apikey="mp_e955880e6b13a60a05143407731cf1ff02ca3273dfe9e599fa7c205268280f95"
+        data-debug="true"
+        data-endpoint="http://localhost:3000/api/v1/collect/optimized">
+    </script>
+</head>
+<body>
+    <h1>MetricPal Tracking Test Page</h1>
+    <p>Open browser console to see tracking logs.</p>
+    
+    <button onclick="alert('Button clicked!')">Test Button</button>
+    
+    <form>
+        <input type="email" placeholder="Enter email" />
+        <button type="submit">Submit</button>
+    </form>
+    
+    <script>
+        console.log('Test page loaded');
+        setTimeout(() => {
+            console.log('Checking for MetricPal...');
+            if (window.MetricPal) {
+                console.log('✅ MetricPal loaded successfully!');
+            } else {
+                console.log('❌ MetricPal not found');
+            }
+        }, 2000);
+    </script>
+</body>
+</html>

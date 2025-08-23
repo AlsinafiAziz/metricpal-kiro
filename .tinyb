@@ -1,0 +1,14 @@
+{
+    "host": "https://api.europe-west2.gcp.tinybird.co",
+    "id": "9d915c26-f864-4e84-8cfc-d44fa1046479",
+    "name": "metricpal",
+    "scope": "user",
+    "token": "p.eyJ1IjogIjlkOTE1YzI2LWY4NjQtNGU4NC04Y2ZjLWQ0NGZhMTA0NjQ3OSIsICJpZCI6ICJhZGE4NjYxNi1hM2NlLTQ0ZDYtODU3YS03OTJiM2VlYTExZjUiLCAiaG9zdCI6ICJnY3AtZXVyb3BlLXdlc3QyIn0.nuBe5ylu3xYm01oUc3kHPZiV3m_--WXZL9tkalzb0JY",
+    "tokens": {
+        "https://api.europe-west2.gcp.tinybird.co": "p.eyJ1IjogIjlkOTE1YzI2LWY4NjQtNGU4NC04Y2ZjLWQ0NGZhMTA0NjQ3OSIsICJpZCI6ICJhZGE4NjYxNi1hM2NlLTQ0ZDYtODU3YS03OTJiM2VlYTExZjUiLCAiaG9zdCI6ICJnY3AtZXVyb3BlLXdlc3QyIn0.nuBe5ylu3xYm01oUc3kHPZiV3m_--WXZL9tkalzb0JY"
+    },
+    "user_email": "alsinafiaziz@gmail.com",
+    "user_id": "e8f299a5-5e78-4256-adcd-c702e3ddb6f6",
+    "user_token": "p.eyJ1IjogImU4ZjI5OWE1LTVlNzgtNDI1Ni1hZGNkLWM3MDJlM2RkYjZmNiIsICJpZCI6ICIyMGRjMTYwZi1jZTMwLTRiY2YtYjgwZC1jNTJiYTJiNmY5ZjQiLCAiaG9zdCI6ICJnY3AtZXVyb3BlLXdlc3QyIn0.jKVBLOoai9KOy0wXsmQnDjNbH_rlR6Nq6GbAfIK2RUk",
+    "version": "0.0.1.dev285"
+}

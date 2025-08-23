@@ -1,0 +1,25 @@
+TOKEN "user_journey_endpoint_read_token" READ
+
+NODE user_journey_data
+SQL >
+    %
+    SELECT 
+        timestamp,
+        workspace_id,
+        visitor_id,
+        session_id,
+        action_type,
+        url,
+        element,
+        text,
+        value,
+        email_hash,
+        email_domain
+    FROM website_events
+    WHERE workspace_id = {{ String(workspace_id, required=True) }}
+      AND visitor_id = {{ String(visitor_id, required=True) }}
+      AND timestamp >= {{ DateTime(start_date, '2024-01-01 00:00:00') }}
+      AND timestamp <= {{ DateTime(end_date, '2024-12-31 23:59:59') }}
+    ORDER BY timestamp ASC
+
+TYPE ENDPOINT

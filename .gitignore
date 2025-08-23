@@ -1,0 +1,18 @@
+cat > .gitignore << 'EOF'
+# deps & builds
+node_modules/
+.pnp
+.pnp.js
+.next/
+out/
+dist/
+build/
+
+# env / local
+.env*
+!.env.example
+.DS_Store
+.kiro/
+.vscode/
+coverage/
+EOF

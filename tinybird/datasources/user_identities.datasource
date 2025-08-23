@@ -1,0 +1,12 @@
+SCHEMA >
+    `workspace_id` String `json:$.workspace_id`,
+    `visitor_id` String `json:$.visitor_id`,
+    `email_hash` String `json:$.email_hash`,
+    `email_domain` String `json:$.email_domain`,
+    `identified_at` DateTime64(3) `json:$.identified_at`,
+    `properties` Nullable(String) `json:$.properties`
+
+ENGINE "ReplacingMergeTree"
+ENGINE_PARTITION_KEY "toYYYYMM(identified_at)"
+ENGINE_SORTING_KEY "workspace_id, visitor_id, email_hash"
+ENGINE_TTL "toDateTime(identified_at) + toIntervalDay(365)"
