@@ -8,11 +8,11 @@ out/
 dist/
 build/
 
-# env / local
-.env*
+
 !.env.example
 .DS_Store
 .kiro/
 .vscode/
 coverage/
 EOF
+.env.local

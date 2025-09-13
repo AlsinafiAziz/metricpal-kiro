@@ -58,6 +58,10 @@ AI-Native B2B Analytics Platform that unifies website behavior, ad interactions,
 └── Trackingscript.js       # Existing tracking script
 ```
 
+### Data Flow
+
+See `DATA_FLOW.md` for how events move from the tracking script → API → Tinybird, including auth, validation, forwarding, and query examples.
+
 ### Development Environment
 
 The docker-compose.yml includes:
